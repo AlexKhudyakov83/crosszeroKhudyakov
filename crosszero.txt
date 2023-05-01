@@ -1,0 +1,81 @@
+#  Определяем игровое поле:
+playing_field = [1, 2, 3,
+                 4, 5, 6,
+                 7, 8, 9]
+
+# Определяем варианты победители
+vinners = [[0, 1, 2],
+           [3, 4, 5],
+           [6, 7, 8],
+           [0, 3, 6],
+           [1, 4, 7],
+           [2, 5, 8],
+           [0, 4, 8],
+           [2, 4, 6]]
+
+
+# Создаем функцию, выводящую игровое поле на экран:
+def show_field():
+    print(playing_field[0], playing_field[1], playing_field[2])
+    print(playing_field[3], playing_field[4], playing_field[5])
+    print(playing_field[6], playing_field[7], playing_field[8])
+
+
+# Создаем два списка для хранения результатов
+X = []
+O = []
+
+# Создаем переменную для выхода из игрового цикла
+s = 0
+
+
+# Создаем функцию для ввода и добавления крестиков на игровое поле
+def search_cross():
+    x1 = int(input("Введите крестик: "))
+    # Внутри функции создаем условие для проверки уже введенных крестиков и ноликов
+    if x1 in O or x1 in X:
+        print('Поле уже занято!')
+        return search_cross()
+    else:
+        playing_field[x1 - 1] = "X"
+        X.append(x1)
+    show_field()
+
+
+# Создаем функцию для ввода и добавления ноликов на игровое поле
+def search_zero():
+    o1 = int(input("Введите нолик: "))
+    # Внутри функции создаем условие для проверки уже введенных крестиков и ноликов
+    if o1 in O or o1 in X:
+        print('Поле уже занято!')
+        return search_zero()
+    else:
+        playing_field[o1 - 1] = "O"
+        O.append(o1)
+    show_field()
+
+
+# Выводим игровое поле на экран
+show_field()
+
+# Запускаем игровой цикл. Внутри цикла создадим условия определения победителя
+while True:
+    search_cross()
+    for i in vinners:
+        if playing_field[i[0]] == "X" and playing_field[i[1]] == "X" and playing_field[i[2]] == "X":
+            s = 1
+            print("Игрок играющий крестиками выиграл!!! \nПоздравляем!!!")
+    if s == 1:
+        break
+
+# Создаем условие на случай если закончатся варианты
+    if len(X) + len(O) == 9:
+        print("Варианты закончились, начните заново!")
+
+    search_zero()
+    for i in vinners:
+        if playing_field[i[0]] == "O" and playing_field[i[1]] == "O" and playing_field[i[2]] == "O":
+            s = 1
+            print("Игрок играющий ноликами выиграл!!! \nПоздравляем!!!")
+    if s == 1:
+        break
